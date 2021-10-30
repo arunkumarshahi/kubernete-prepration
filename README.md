@@ -18,3 +18,9 @@ kubectl create -f nginx.yaml --dry-run=client  --validate=true
 ```
 >kubectl apply -f nginx.yaml --save-config
 ```
+# to get details of pod 
+```
+>kubectl get pod nginx-deployment-66b6c48dd5-pjzdg -o yaml
+
+>kubectl describe pod nginx
+```
