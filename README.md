@@ -24,3 +24,7 @@ kubectl create -f nginx.yaml --dry-run=client  --validate=true
 
 >kubectl describe pod nginx
 ```
+# to access directory or details inside pod
+```
+kubectl exec my-nginx -it sh
+```
