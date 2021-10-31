@@ -28,3 +28,8 @@ kubectl create -f nginx.yaml --dry-run=client  --validate=true
 ```
 kubectl exec my-nginx -it sh
 ```
+# check liveness probe
+```
+kubectl describe pod nginx
+```
+![image](https://user-images.githubusercontent.com/37396796/139572957-6dad9302-71c5-4efd-b12a-c9f1b4016bc0.png)
