@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connect-mongo-node-js-app-deployment
+  namespace: mongo
+  labels:
+    app: connect-mongo-node-js-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: connect-mongo-node-js-app
+  template:
+    metadata:
+      labels:
+        app: connect-mongo-node-js-app
+    spec:
+      containers:
+        - name: connect-mongo-node-js-app
+          image: arunkumarshahi/connect-mongo-node-js-app
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8090
+          env:
+            - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-username
+
+            - name: ME_CONFIG_MONGODB_ADMINPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-password
+            - name: ME_CONFIG_MONGODB_SERVER
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-configmap
+                  key: db_url
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-configmap
+                  key: port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: connect-mongo-node-js-app-service
+  namespace: mongo
+spec:
+  selector:
+    app: connect-mongo-node-js-app
+  # type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8091
+      targetPort: 8090
+      # nodePort: 30002
